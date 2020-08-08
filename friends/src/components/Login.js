@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { TextField, Button } from '@material-ui/core'
+import { useHistory, Redirect } from 'react-router-dom'
 
 const Login = (props) => {
 
@@ -15,6 +16,16 @@ const Login = (props) => {
     })
   }
 
+  const handleSubmit = e => {
+    e.preventDefault()
+    props.login(credentails)
+  }
+
+  if (localStorage.getItem('loginToken')) {
+    return (
+      <Redirect to='/userpage' />
+    )
+  }
 
   return (
     <div>
@@ -31,8 +42,9 @@ const Login = (props) => {
           password={credentails.password}
           onChange={handleChanges}
         />
-        <Button onClick={props.login}>Log In</Button>
+        <Button onClick={handleSubmit}>Log In</Button>
       </form>
+      {props.error && <p style={{ color: 'red' }}>{props.error}</p>}
     </div>
   )
 }
